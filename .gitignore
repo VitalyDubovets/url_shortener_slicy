@@ -1,0 +1,8 @@
+.idea
+.env
+*.pyc
+
+/postgres-data
+/cache-data
+
+*.py[cod]
