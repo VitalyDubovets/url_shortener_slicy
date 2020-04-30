@@ -17,6 +17,7 @@ werkzeug = "^1.0.1"
 flask-httpauth = "^4.0.0"
 flask-restful = "^0.3.8"
 flask-marshmallow = "^0.12.0"
+marshmallow-sqlalchemy = "^0.23.0"
 
 [tool.poetry.dev-dependencies]
 
