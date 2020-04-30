@@ -3,6 +3,7 @@ import os
 
 from flask import Flask
 from flask_httpauth import HTTPBasicAuth
+from flask_marshmallow import Marshmallow
 from flask_redis import Redis
 from flask_sqlalchemy import SQLAlchemy
 
@@ -13,6 +14,7 @@ dotenv.load_dotenv(dotenv_path=os.path.join(basedir, '.env'), override=True)
 
 auth = HTTPBasicAuth()
 db = SQLAlchemy()
+mr_mallow = Marshmallow()
 redis = Redis()
 
 
@@ -29,6 +31,7 @@ def create_app():
     app.config.from_object(os.getenv('APP_CONFIG'))
 
     db.init_app(app)
+    mr_mallow.init_app(app)
     redis.init_app(app)
 
     from .users import users as users_blueprint
