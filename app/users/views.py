@@ -1,9 +1,24 @@
+from flask import g, make_response, jsonify
 from flask_restful import Resource, reqparse, abort
 from sqlalchemy.exc import IntegrityError
 
 from .models import User
 from .serializers import UserSerializer
-from app import db
+from app import db, auth
+
+
+@auth.verify_password
+def verify_password(username, password):
+    user = User.query.filter_by(username=username).first()
+    if not user or not user.check_password(password):
+        return False
+    g.user = user
+    return True
+
+
+@auth.error_handler
+def unauthorized():
+    return make_response(jsonify({'message': 'Unauthorized access'}), 401)
 
 
 class UserCollectionAPI(Resource):
@@ -46,14 +61,15 @@ class UserAPI(Resource):
     def get(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            abort(400, message="User doesn't exist")
+            abort(404, message="User doesn't exist")
         serializer = UserSerializer()
         return serializer.dump(user)
 
+    @auth.login_required
     def patch(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            abort(400, message="User doesn't exist")
+            abort(404, message="User doesn't exist")
         args = self.reqparse.parse_args()
         updated_data = args.copy()
         for k, v in args.items():
@@ -74,7 +90,7 @@ class UserAPI(Resource):
     def delete(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            abort(400, message="User is already deleted")
+            abort(404, message="User is already deleted")
         serializer = UserSerializer()
         user_data = serializer.dump(user)
         db.session.delete(user)
