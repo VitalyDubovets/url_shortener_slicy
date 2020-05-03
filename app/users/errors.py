@@ -2,12 +2,17 @@ from werkzeug.exceptions import HTTPException
 
 
 errors = {
+    'BadUsernameOrPasswordError': {
+        'message': "Bad username or password",
+        'status': 400,
+        'extra': 'Make sure that you entered your username or password correctly'
+    },
     'UserAlreadyExistsError': {
-        'message': "A user with that username or email already exists.",
+        'message': "A user with that username or email already exists",
         'status': 409,
     },
     'UserIsAlreadyDeletedError': {
-        'message': "A user is already deleted.",
+        'message': "A user is already deleted",
         'status': 404,
     },
     'ArgumentsIsEmptyError': {
@@ -16,10 +21,15 @@ errors = {
         'extra': "Please, fill all arguments in your JSON before sending request",
     },
     'UserDoesNotExistError': {
-        'message': "User doesn't exist",
+        'message': "User doesn\'t exist",
         'status': 404,
     }
 }
+
+
+class BadUsernameOrPasswordError(HTTPException):
+    code = 400
+    description = ('Bad username or password',)
 
 
 class UserAlreadyExistsError(HTTPException):

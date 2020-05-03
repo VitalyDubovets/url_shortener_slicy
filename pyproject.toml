@@ -5,19 +5,20 @@ description = ""
 authors = ["VitalyDubovets <dubovetsvitaliy@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "3.6"
 Flask = "1.1.2"
 python-dotenv = "0.13.0"
-flask-script = "^2.0.6"
-Flask-SQLAlchemy = "^2.4.1"
-psycopg2-binary = "^2.8.5"
-flask-and-redis = "^1.0.0"
-flask-migrate = "^2.5.3"
-werkzeug = "^1.0.1"
-flask-httpauth = "^4.0.0"
-flask-restful = "^0.3.8"
-flask-marshmallow = "^0.12.0"
-marshmallow-sqlalchemy = "^0.23.0"
+flask-script = "2.0.6"
+Flask-SQLAlchemy = "2.4.1"
+psycopg2-binary = "2.8.5"
+flask-and-redis = "1.0.0"
+flask-migrate = "2.5.3"
+werkzeug = "1.0.1"
+flask-httpauth = "4.0.0"
+flask-restful = "0.3.8"
+flask-marshmallow = "0.12.0"
+marshmallow-sqlalchemy = "0.23.0"
+flask-jwt-extended = "3.24.1"
 
 [tool.poetry.dev-dependencies]
 

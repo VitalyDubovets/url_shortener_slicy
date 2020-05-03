@@ -72,6 +72,23 @@ Flask = "*"
 
 [[package]]
 category = "main"
+description = "Extended JWT integration with Flask"
+name = "flask-jwt-extended"
+optional = false
+python-versions = "*"
+version = "3.24.1"
+
+[package.dependencies]
+Flask = ">=1.0"
+PyJWT = ">=1.6.4"
+Werkzeug = ">=0.14"
+six = "*"
+
+[package.extras]
+asymmetric_crypto = ["cryptography (>=2.3)"]
+
+[[package]]
+category = "main"
 description = "Flask + marshmallow for beautiful APIs"
 name = "flask-marshmallow"
 optional = false
@@ -230,6 +247,19 @@ version = "2.8.5"
 
 [[package]]
 category = "main"
+description = "JSON Web Token implementation in Python"
+name = "pyjwt"
+optional = false
+python-versions = "*"
+version = "1.7.1"
+
+[package.extras]
+crypto = ["cryptography (>=1.4)"]
+flake8 = ["flake8", "flake8-import-order", "pep8-naming"]
+test = ["pytest (>=4.0.1,<5.0.0)", "pytest-cov (>=2.6.0,<3.0.0)", "pytest-runner (>=4.2,<5.0.0)"]
+
+[[package]]
+category = "main"
 description = "Extensions to the standard Python datetime module"
 name = "python-dateutil"
 optional = false
@@ -318,8 +348,8 @@ dev = ["pytest", "pytest-timeout", "coverage", "tox", "sphinx", "pallets-sphinx-
 watchdog = ["watchdog"]
 
 [metadata]
-content-hash = "840e0ebc84c434214238722d19cea6f0d4fd186a2a71e611f4e6dff07ececf30"
-python-versions = "^3.6"
+content-hash = "d18968dc9ae2c3d162afe6b0fa082b848f912dd04213c94fe293c3b8de6868c1"
+python-versions = "3.6"
 
 [metadata.files]
 alembic = [
@@ -345,6 +375,9 @@ flask-and-redis = [
 flask-httpauth = [
     {file = "Flask-HTTPAuth-4.0.0.tar.gz", hash = "sha256:47d62edc33ff16798ed28e06a7387ed10a15f21249c5f61515b41351356a6afc"},
     {file = "Flask_HTTPAuth-4.0.0-py2.py3-none-any.whl", hash = "sha256:067768dbed7b68b2a0172453eaad64648cd6b004b8a2a3912f363050532d11c3"},
+]
+flask-jwt-extended = [
+    {file = "Flask-JWT-Extended-3.24.1.tar.gz", hash = "sha256:0aa8ee6fa7eb3be9314e39dd199ac8e19389a95371f9d54e155c7aa635e319dd"},
 ]
 flask-marshmallow = [
     {file = "flask-marshmallow-0.12.0.tar.gz", hash = "sha256:6e6aec171b8e092e0eafaf035ff5b8637bf3a58ab46f568c4c1bab02f2a3c196"},
@@ -451,6 +484,10 @@ psycopg2-binary = [
     {file = "psycopg2_binary-2.8.5-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:7036ccf715925251fac969f4da9ad37e4b7e211b1e920860148a10c0de963522"},
     {file = "psycopg2_binary-2.8.5-cp38-cp38-win32.whl", hash = "sha256:8f74e631b67482d504d7e9cf364071fc5d54c28e79a093ff402d5f8f81e23bfa"},
     {file = "psycopg2_binary-2.8.5-cp38-cp38-win_amd64.whl", hash = "sha256:fa466306fcf6b39b8a61d003123d442b23707d635a5cb05ac4e1b62cc79105cd"},
+]
+pyjwt = [
+    {file = "PyJWT-1.7.1-py2.py3-none-any.whl", hash = "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e"},
+    {file = "PyJWT-1.7.1.tar.gz", hash = "sha256:8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96"},
 ]
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
