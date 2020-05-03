@@ -1,9 +1,11 @@
 from flask import g, make_response, jsonify
-from flask_restful import Resource, reqparse, abort
+from flask_restful import Resource, reqparse
 from sqlalchemy.exc import IntegrityError
 
+from .errors import UserAlreadyExistsError, UserIsAlreadyDeletedError, ArgumentsIsEmptyError, UserDoesNotExistError
 from .models import User
 from .serializers import UserSerializer
+
 from app import db, auth
 
 
@@ -45,7 +47,7 @@ class UserCollectionAPI(Resource):
             db.session.add(user)
             db.session.commit()
         except IntegrityError:
-            abort(400, message='User already exists')
+            raise UserAlreadyExistsError
         return {'message': f'User created successfully.',
                 'user': serializer.dump(user)}, 201
 
@@ -61,36 +63,32 @@ class UserAPI(Resource):
     def get(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            abort(404, message="User doesn't exist")
+            raise UserDoesNotExistError
         serializer = UserSerializer()
         return serializer.dump(user)
 
-    @auth.login_required
     def patch(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            abort(404, message="User doesn't exist")
+            raise UserDoesNotExistError
         args = self.reqparse.parse_args()
         updated_data = args.copy()
         for k, v in args.items():
             if not v:
                 updated_data.pop(k)
         if not updated_data:
-            abort(400, message='Arguments is empty in json')
+            raise ArgumentsIsEmptyError
         serializer = UserSerializer()
         for k, v in updated_data.items():
-            setattr(User, k, v)
-        try:
-            db.session.add(user)
-            db.session.commit()
-        except IntegrityError:
-            abort(400, message='A user with this name or email already exists')
+            setattr(user, k, v)
+        db.session.add(user)
+        db.session.commit()
         return {'updated_data': updated_data, 'user': serializer.dump(user)}, 200
 
     def delete(self, user_id):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            abort(404, message="User is already deleted")
+            raise UserIsAlreadyDeletedError
         serializer = UserSerializer()
         user_data = serializer.dump(user)
         db.session.delete(user)
