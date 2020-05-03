@@ -13,6 +13,9 @@ class Link(db.Model):
     short_url = db.Column(db.String(120), index=True)
     count_of_visits = db.Column(db.Integer)
 
+    def __str__(self):
+        return self.long_url
+
     def check_and_save_link(self):
         if not re.match('^http[s]?://', self.long_url):
             self.long_url = 'https://' + self.long_url

@@ -10,7 +10,7 @@ class User(db.Model):
     username = db.Column(db.String(120), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    links = db.relationship(Link, lazy='dynamic', backref='links')
+    links = db.relationship(Link, lazy='dynamic', backref='user')
 
     def __repr__(self):
         return f'Users {self.username}'
