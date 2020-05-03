@@ -1,6 +1,6 @@
 import datetime
 
-from flask import g, make_response, jsonify
+from flask import g
 from flask_jwt_extended import (create_access_token, create_refresh_token, jwt_refresh_token_required,
                                 get_jwt_identity, jwt_required, get_raw_jwt)
 from flask_restful import Resource, reqparse
@@ -10,21 +10,7 @@ from .errors import *
 from .models import User, BlacklistToken
 from .serializers import UserSerializer
 
-from app import db, auth, jwt
-
-
-@auth.verify_password
-def verify_password(username, password):
-    user = User.find_by_username(username)
-    if not user or not user.check_password(password):
-        return False
-    g.user = user
-    return True
-
-
-@auth.error_handler
-def unauthorized():
-    return make_response(jsonify({'message': 'Unauthorized access'}), 401)
+from app import db, jwt
 
 
 @jwt.token_in_blacklist_loader
@@ -76,8 +62,8 @@ class UserCollectionAPI(Resource):
         return serializer.dump(users), 200
 
     def post(self):
-        args = self.reqparse.parse_args(http_error_code=400)
-        user = User(username=args['username'], password=args['password'], email=args['email'])
+        data = self.reqparse.parse_args(http_error_code=400)
+        user = User(username=data['username'], password=data['password'], email=data['email'])
         serializer = UserSerializer()
         access_expiry = datetime.timedelta(minutes=15)
         refresh_expiry = datetime.timedelta(days=30)
@@ -117,9 +103,9 @@ class UserAPI(Resource):
         user = User.query.filter_by(id=user_id).first()
         if not user:
             raise UserDoesNotExistError
-        args = self.reqparse.parse_args()
-        updated_data = args.copy()
-        for k, v in args.items():
+        data = self.reqparse.parse_args()
+        updated_data = data.copy()
+        for k, v in data.items():
             if not v:
                 updated_data.pop(k)
         if not updated_data:

@@ -3,7 +3,6 @@ import os
 
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from flask_httpauth import HTTPBasicAuth
 from flask_marshmallow import Marshmallow
 from flask_redis import Redis
 from flask_sqlalchemy import SQLAlchemy
@@ -13,7 +12,6 @@ from config import basedir
 
 dotenv.load_dotenv(dotenv_path=os.path.join(basedir, '.env'), override=True)
 
-auth = HTTPBasicAuth()
 db = SQLAlchemy()
 jwt = JWTManager()
 mr_mallow = Marshmallow()
