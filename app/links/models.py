@@ -10,7 +10,7 @@ class Link(db.Model):
     privacy = db.Column(db.Boolean())
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     long_url = db.Column(db.String(120), index=True)
-    short_url = db.Column(db.String(120), index=True)
+    short_url = db.Column(db.String(120), index=True, unique=True)
     count_of_visits = db.Column(db.Integer)
 
     def __str__(self):
