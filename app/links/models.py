@@ -11,7 +11,7 @@ class Link(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     long_url = db.Column(db.String(120), index=True)
     short_url = db.Column(db.String(120), index=True, unique=True)
-    count_of_visits = db.Column(db.Integer)
+    count_of_visits = db.Column(db.Integer, default=0)
 
     def __str__(self):
         return self.long_url
