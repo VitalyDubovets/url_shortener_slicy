@@ -11,17 +11,13 @@ errors = {
         'message': "A user with that username or email already exists",
         'status': 409,
     },
-    'UserIsAlreadyDeletedError': {
-        'message': "A user is already deleted",
-        'status': 404,
-    },
     'ArgumentsIsEmptyError': {
         'message': "JSON's arguments is empty",
         'status': 400,
         'extra': "Please, fill all arguments in your JSON before sending request",
     },
-    'UserDoesNotExistError': {
-        'message': "User doesn\'t exist",
+    'UserNotFoundError': {
+        'message': "User not found",
         'status': 404,
     }
 }
@@ -37,9 +33,9 @@ class UserAlreadyExistsError(HTTPException):
     description = ("User already exists",)
 
 
-class UserDoesNotExistError(HTTPException):
+class UserNotFoundError(HTTPException):
     code = 404
-    description = ("User doesn't exist",)
+    description = ("User not found",)
 
 
 class UserIsAlreadyDeletedError(HTTPException):

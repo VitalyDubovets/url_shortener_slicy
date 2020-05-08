@@ -27,7 +27,7 @@ class AuthAPI(Resource):
         super(AuthAPI, self).__init__()
 
     def post(self):
-        data = self.reqparse.parse_args()
+        data: dict = self.reqparse.parse_args()
         current_user = User.find_by_username(data['username'])
         if not current_user or not current_user.check_password(data['password']):
             raise BadUsernameOrPasswordError
@@ -62,7 +62,7 @@ class UserCollectionAPI(Resource):
         return serializer.dump(users), 200
 
     def post(self):
-        data = self.reqparse.parse_args(http_error_code=400)
+        data: dict = self.reqparse.parse_args(http_error_code=400)
         user = User(username=data['username'], password=data['password'], email=data['email'])
         serializer = UserSerializer()
         access_expiry = datetime.timedelta(minutes=15)
@@ -92,19 +92,19 @@ class UserAPI(Resource):
         self.reqparse.add_argument('email', type=str, location='json')
         super(UserAPI, self).__init__()
 
-    def get(self, user_id):
+    def get(self, user_id: int):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            raise UserDoesNotExistError
+            raise UserNotFoundError
         serializer = UserSerializer()
         return serializer.dump(user)
 
-    def patch(self, user_id):
+    def patch(self, user_id: int):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            raise UserDoesNotExistError
-        data = self.reqparse.parse_args()
-        updated_data = data.copy()
+            raise UserNotFoundError
+        data: dict = self.reqparse.parse_args()
+        updated_data: dict = data.copy()
         for k, v in data.items():
             if not v:
                 updated_data.pop(k)
@@ -117,15 +117,15 @@ class UserAPI(Resource):
         db.session.commit()
         return {'updated_data': updated_data, 'user': serializer.dump(user)}, 200
 
-    def delete(self, user_id):
+    def delete(self, user_id: int):
         user = User.query.filter_by(id=user_id).first()
         if not user:
-            raise UserIsAlreadyDeletedError
+            raise UserNotFoundError
         serializer = UserSerializer()
-        user_data = serializer.dump(user)
+        user_data: dict = serializer.dump(user)
         db.session.delete(user)
         db.session.commit()
-        return {'message': f'User deleted successfully.', 'user': user_data}, 204
+        return {'message': f'User was deleted successfully.', 'user': user_data}, 204
 
 
 class UserLogoutAccessAPI(Resource):
@@ -149,7 +149,7 @@ class UserLogoutRefreshAPI(Resource):
 class TokenRefreshAPI(Resource):
     @jwt_refresh_token_required
     def post(self):
-        current_user = get_jwt_identity()
+        current_user: str = get_jwt_identity()
         access_expiry = datetime.timedelta(minutes=15)
         access_token = create_access_token(identity=current_user, expires_delta=access_expiry)
         return {'access_token': access_token}, 200
